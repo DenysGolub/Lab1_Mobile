@@ -31,7 +31,9 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import com.example.lab1_navigation.ui.theme.Lab1_NavigationTheme
+import com.example.lab1_navigation.view.LocationPage
 import com.example.lab1_navigation.view.ProfilePage
+import com.example.lab1_navigation.viewmodel.LocationViewModel
 import com.example.lab1_navigation.viewmodel.ProfileViewModel
 
 class MainActivity : ComponentActivity() {
@@ -82,25 +84,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
-    @Composable
-    fun LocationScreen(modifier: Modifier) {
-        Column(modifier = modifier) {
-            var str by remember {  mutableStateOf("Location screen! Some info will be displayed here.")}
-            Text(text = str)
-            Button(
-                modifier = Modifier
-                    .padding(top = 10.dp)
-                    .fillMaxWidth().background(Color.Magenta),
-                onClick = {
-                    str = ""}) { Text("BTN 1") }
-        }
-    }
-
     @Composable
     fun ProfileScreen(modifier: Modifier) {
         val profileViewModel = ViewModelProvider(this)[ProfileViewModel::class]
         ProfilePage(modifier, profileViewModel)
+    }
+
+    @Composable
+    fun LocationScreen(modifier: Modifier) {
+        val locationViewModel: LocationViewModel = ViewModelProvider(this)[LocationViewModel::class]
+        LocationPage(modifier, locationViewModel)
     }
 
 }
