@@ -7,9 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -17,8 +14,6 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModelProvider
 import com.example.lab1_navigation.ui.theme.Lab1_NavigationTheme
 import com.example.lab1_navigation.view.ProfilePage
 import com.example.lab1_navigation.view.SettingsPage
@@ -80,6 +75,5 @@ class MainActivity : ComponentActivity() {
         val settingsViewModel: SettingsViewModel by viewModels()
         SettingsPage(modifier, settingsViewModel)
     }
-
 }
 
