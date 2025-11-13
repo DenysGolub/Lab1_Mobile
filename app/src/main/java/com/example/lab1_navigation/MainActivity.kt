@@ -4,37 +4,26 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import com.example.lab1_navigation.ui.theme.Lab1_NavigationTheme
-import com.example.lab1_navigation.view.LocationPage
 import com.example.lab1_navigation.view.ProfilePage
-import com.example.lab1_navigation.viewmodel.LocationViewModel
+import com.example.lab1_navigation.view.SettingsPage
 import com.example.lab1_navigation.viewmodel.ProfileViewModel
+import com.example.lab1_navigation.viewmodel.SettingsViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,57 +32,53 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             Lab1_NavigationTheme {
-                Lab1_NavigationApp()
+                Lab1NavigationApp()
             }
         }
     }
-    @PreviewScreenSizes
+
     @Composable
-    fun Lab1_NavigationApp() {
+    fun Lab1NavigationApp() {
         var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.PROFILE) }
 
         NavigationSuiteScaffold(
             navigationSuiteItems = {
-                AppDestinations.entries.forEach {
+                AppDestinations.entries.forEach { destination ->
                     item(
                         icon = {
                             Icon(
-                                it.icon,
-                                contentDescription = it.label
+                                destination.icon,
+                                contentDescription = destination.label
                             )
                         },
-                        label = { Text(it.label) },
-                        selected = it == currentDestination,
-                        onClick = { currentDestination = it }
+                        label = { Text(destination.label) },
+                        selected = destination == currentDestination,
+                        onClick = { currentDestination = destination }
                     )
                 }
             }
         ) {
             Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                 when (currentDestination) {
-                    AppDestinations.LOCATION -> LocationScreen(modifier = Modifier.padding(innerPadding))
-                    AppDestinations.PROFILE -> ProfileScreen(
-                        modifier = Modifier.padding(
-                            innerPadding
-                        )
-                    )
-//                AppDestinations.PROFILE -> TODO()
+                    AppDestinations.PROFILE ->
+                        ProfileScreen(Modifier.padding(innerPadding))
+                    AppDestinations.SETTINGS ->
+                        SettingsScreen(Modifier.padding(innerPadding))
                 }
             }
-
         }
     }
 
     @Composable
-    fun ProfileScreen(modifier: Modifier) {
-        val profileViewModel = ViewModelProvider(this)[ProfileViewModel::class]
+    fun ProfileScreen(modifier: Modifier = Modifier) {
+        val profileViewModel: ProfileViewModel by viewModels()
         ProfilePage(modifier, profileViewModel)
     }
 
     @Composable
-    fun LocationScreen(modifier: Modifier) {
-        val locationViewModel: LocationViewModel = ViewModelProvider(this)[LocationViewModel::class]
-        LocationPage(modifier, locationViewModel)
+    fun SettingsScreen(modifier: Modifier = Modifier) {
+        val settingsViewModel: SettingsViewModel by viewModels()
+        SettingsPage(modifier, settingsViewModel)
     }
 
 }

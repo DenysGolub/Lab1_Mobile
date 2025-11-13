@@ -23,74 +23,66 @@ fun ProfilePage(modifier: Modifier = Modifier, viewModel: ProfileViewModel) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF2F2F7))
-            .padding(24.dp),
+            .background(Color(0xFFE8EAF6))
+            .padding(32.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = "Профіль користувача",
-            fontSize = 22.sp,
+            fontSize = 26.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF3F51B5)
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
-
         ElevatedCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .shadow(6.dp, RoundedCornerShape(16.dp)),
-            shape = RoundedCornerShape(16.dp)
+                .shadow(8.dp, RoundedCornerShape(20.dp)),
+            shape = RoundedCornerShape(20.dp)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
-                    .padding(20.dp)
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.Start
             ) {
                 if (account == null) {
                     Text(
                         text = "Дані акаунта ще не завантажені.",
                         color = Color.Gray,
-                        fontSize = 16.sp
+                        fontSize = 18.sp
                     )
                 } else {
                     Text("Ім’я: ${account!!.name}", fontSize = 18.sp)
                     Text("Логін: ${account!!.username}", fontSize = 18.sp)
-                    Text("Job: ${account!!.job}", fontSize = 18.sp)
+                    Text("Робота: ${account!!.job}", fontSize = 18.sp)
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = statusText,
+            fontSize = 18.sp,
+            color = Color.DarkGray,
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
 
         Button(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6200EE)),
             onClick = {
                 viewModel.getAccount()
-                statusText = "Інформація оновлюється..."
-            }
-        ) {
-            Text("Отримати дані", color = Color.White)
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009688)),
-            onClick = {
                 statusText = if (account == null)
-                    "Спочатку завантаж дані!"
+                    "Завантаження даних..."
                 else
-                    "Останнє оновлення: ${account!!.name}"
+                    "Дані оновлено для користувача ${account!!.name}"
             }
         ) {
-            Text("Показати статус", color = Color.White)
+            Text("Оновити профіль", color = Color.White, fontSize = 18.sp)
         }
-
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(text = statusText, fontSize = 16.sp, color = Color.DarkGray)
     }
 }
